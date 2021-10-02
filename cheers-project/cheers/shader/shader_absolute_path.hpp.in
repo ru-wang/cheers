@@ -1,0 +1,42 @@
+#pragma once
+
+#define CHEERS_GLSL_VERSION_NUMBER @CHEERS_GLSL_VERSION_NUMBER@
+#define CHEERS_GLSL_SHADER_PATH @CHEERS_GLSL_SHADER_PATH@
+
+#define CHEERS_LITERAL_STRING(s) #s
+
+#define CHEERS_SHADER_PATH_(path) CHEERS_LITERAL_STRING(path)
+#define CHEERS_SHADER_PATH CHEERS_SHADER_PATH_(CHEERS_GLSL_SHADER_PATH)
+
+#define CHEERS_SHADER_VERSION_FILE_(name, version, type) \
+  CHEERS_LITERAL_STRING(name##_##version.type)
+
+#define CHEERS_SHADER_VERSION_FILE(name, version, type) \
+  CHEERS_SHADER_VERSION_FILE_(name, version, type)
+
+#define CHEERS_SHADER_FILE(name, type) \
+  CHEERS_SHADER_VERSION_FILE(name, CHEERS_GLSL_VERSION_NUMBER, type)
+
+#define CHEERS_SHADER_FILE_PATH(name, type) \
+  std::filesystem::path(CHEERS_SHADER_PATH) / std::filesystem::path(CHEERS_SHADER_FILE(name, type))
+
+#include <filesystem>
+
+namespace cheers {
+
+inline static const auto axis_vshader_absolute_path = CHEERS_SHADER_FILE_PATH(axis_shader, vert);
+inline static const auto axis_fshader_absolute_path = CHEERS_SHADER_FILE_PATH(axis_shader, frag);
+
+inline static const auto grid_vshader_absolute_path = CHEERS_SHADER_FILE_PATH(grid_shader, vert);
+inline static const auto grid_fshader_absolute_path = CHEERS_SHADER_FILE_PATH(grid_shader, frag);
+
+inline static const auto imgui_vshader_absolute_path = CHEERS_SHADER_FILE_PATH(imgui_shader, vert);
+inline static const auto imgui_fshader_absolute_path = CHEERS_SHADER_FILE_PATH(imgui_shader, frag);
+
+inline static const auto model_vshader_absolute_path = CHEERS_SHADER_FILE_PATH(model_shader, vert);
+inline static const auto model_fshader_absolute_path = CHEERS_SHADER_FILE_PATH(model_shader, frag);
+
+inline static const auto path_vshader_absolute_path = CHEERS_SHADER_FILE_PATH(path_shader, vert);
+inline static const auto path_fshader_absolute_path = CHEERS_SHADER_FILE_PATH(path_shader, frag);
+
+}  // namespace cheers

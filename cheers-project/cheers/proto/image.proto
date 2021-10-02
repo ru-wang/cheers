@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package cheers.message;
+
+message Image {
+  uint32 width = 1;
+  uint32 height = 2;
+  bytes data = 3;
+}
+
+message ImageHandlerConfig {
+  string name = 1;
+};
+
+message ImageHandler {
+  ImageHandlerConfig config = 1;
+  Image image = 2;
+}

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+import "cheers/proto/misc.proto";
+
+package cheers.message;
+
+message ModelConfig {
+  string name = 1;
+  float point_size = 2;
+  ColorRGBA color = 3;
+}
+
+message Model {
+  ModelConfig config = 1;
+  repeated Vector3f vertex = 2;
+  repeated Triangle triangle = 3;
+}
