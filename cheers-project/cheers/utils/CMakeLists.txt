@@ -1,58 +1,58 @@
-CheersPackage()
+bottle_package()
 
-CheersAddTarget(
-  LIB  context
+bottle_library(
+  NAME context
   SRCS context.cpp
   HDRS context.hpp
   DEPS :throw_and_check
        @opengl
 )
 
-CheersAddTarget(
-  LIB  gl_backup_state
+bottle_library(
+  NAME gl_backup_state
   SRCS gl_backup_state.cpp
   HDRS gl_backup_state.hpp
   DEPS @opengl
 )
 
-CheersAddTarget(
-  LIB  gl_object
+bottle_library(
+  NAME gl_object
   SRCS gl_object.cpp
   HDRS gl_object.hpp
   DEPS :throw_and_check
        @opengl
 )
 
-CheersAddTarget(
-  LIB  gl_program_wrapper
+bottle_library(
+  NAME gl_program_wrapper
   SRCS gl_program_wrapper.cpp
   HDRS gl_program_wrapper.hpp
   DEPS :gl_object
        @opengl
 )
 
-CheersAddTarget(
-  LIB  im_renderer
+bottle_library(
+  NAME im_renderer
   SRCS im_renderer.cpp
   HDRS im_renderer.hpp
   DEPS :gl_backup_state
        :gl_program_wrapper
        :throw_and_check
        :window_ui_state
-       /shader
+       //cheers/shader
        @glm
        @imgui
        @opengl
 )
 
-CheersAddTarget(
-  LIB  throw_and_check
+bottle_library(
+  NAME throw_and_check
   HDRS throw_and_check.hpp
   DEPS @fmt
 )
 
-CheersAddTarget(
-  LIB  window_ui_state
+bottle_library(
+  NAME window_ui_state
   HDRS window_ui_state.hpp
   DEPS @glm
        @opengl

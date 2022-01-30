@@ -4,9 +4,9 @@ set(CHEERS_PROTO_MSGS
   ${CMAKE_CURRENT_LIST_DIR}/model.proto
   ${CMAKE_CURRENT_LIST_DIR}/path.proto)
 
-CheersPackage()
+bottle_package()
 
-CheersAddProto(PB image MSGS image.proto)
-CheersAddProto(PB misc  MSGS misc.proto)
-CheersAddProto(PB model MSGS model.proto)
-CheersAddProto(PB path  MSGS path.proto)
+bottle_proto(NAME image MSGS image.proto)
+bottle_proto(NAME misc  MSGS misc.proto)
+bottle_proto(NAME model MSGS model.proto)
+bottle_proto(NAME path  MSGS path.proto)

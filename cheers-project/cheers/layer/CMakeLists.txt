@@ -1,70 +1,70 @@
-CheersPackage()
+bottle_package()
 
-CheersAddTarget(
-  LIB  layer
+bottle_library(
+  NAME layer
   HDRS layer.hpp
 )
 
-CheersAddTarget(
-  LIB  model_layer
+bottle_library(
+  NAME model_layer
   SRCS model_layer.cpp
   HDRS model_layer.hpp
   DEPS :layer
-       /utils.gl_object
-       /utils.gl_program_wrapper
-       /utils.throw_and_check
-       /proto
-       /shader
+       //cheers/utils:gl_object
+       //cheers/utils:gl_program_wrapper
+       //cheers/utils:throw_and_check
+       //cheers/proto
+       //cheers/shader
        @opengl
 )
 
-CheersAddTarget(
-  LIB  path_layer
+bottle_library(
+  NAME path_layer
   SRCS path_layer.cpp
   HDRS path_layer.hpp
   DEPS :layer
        :utils
-       /utils.gl_object
-       /utils.gl_program_wrapper
-       /utils.throw_and_check
-       /proto
-       /shader
+       //cheers/utils:gl_object
+       //cheers/utils:gl_program_wrapper
+       //cheers/utils:throw_and_check
+       //cheers/proto
+       //cheers/shader
        @glm
        @opengl
 )
 
-CheersAddTarget(
-  LIB  rgb_image_layer
+bottle_library(
+  NAME rgb_image_layer
   SRCS rgb_image_layer.cpp
   HDRS rgb_image_layer.hpp
   DEPS :layer
-       /utils.gl_object
-       /proto
+       //cheers/utils:gl_object
+       //cheers/proto
        @imgui
        @opengl
 )
 
-CheersAddTarget(
-  LIB  scene_layer
+bottle_library(
+  NAME scene_layer
   SRCS scene_layer.cpp
   HDRS scene_layer.hpp
   DEPS :layer
        :widget
-       /utils.gl_object
-       /utils.gl_program_wrapper
-       /shader
+       //cheers/utils:gl_object
+       //cheers/utils:gl_program_wrapper
+       //cheers/shader
        @imgui
        @opengl
 )
 
-CheersAddTarget(
-  LIB  utils
+bottle_library(
+  NAME utils
   HDRS utils.hpp
   DEPS @glm
 )
 
-CheersAddTarget(
-  LIB  widget
+bottle_library(
+  NAME widget
   SRCS widget.cpp
   HDRS widget.hpp
   DEPS @imgui

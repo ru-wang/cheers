@@ -1,6 +1,4 @@
-include(FetchContent)
-
-CheersPackage()
+bottle_package(DEPS)
 
 include(import_fmt)
 include(import_glm)

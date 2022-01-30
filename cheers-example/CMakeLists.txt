@@ -32,7 +32,7 @@ add_executable(cheers_example_st
   ${CMAKE_CURRENT_LIST_DIR}/task.cpp
   ${CMAKE_CURRENT_LIST_DIR}/task.hpp)
 target_link_libraries(cheers_example_st
-  PRIVATE cheers Eigen3::Eigen stb_image)
+  PRIVATE cheers-project::cheers Eigen3::Eigen stb_image)
 
 add_executable(cheers_example_mt
   ${CMAKE_CURRENT_LIST_DIR}/cheers_example.cpp
@@ -40,6 +40,6 @@ add_executable(cheers_example_mt
   ${CMAKE_CURRENT_LIST_DIR}/task.cpp
   ${CMAKE_CURRENT_LIST_DIR}/task.hpp)
 target_link_libraries(cheers_example_mt
-  PRIVATE cheers Eigen3::Eigen stb_image)
+  PRIVATE cheers-project::cheers Eigen3::Eigen stb_image)
 target_compile_definitions(cheers_example_mt
   PRIVATE CHEERS_EXAMPLE_MULTITHREAD)

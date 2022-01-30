@@ -5,8 +5,8 @@ FetchContent_Declare(g-truc.glm
 
 FetchContent_MakeAvailable(g-truc.glm)
 
-CheersAddTarget(
-  LIB  glm
+bottle_library(
+  NAME glm
   DEFS GLM_ENABLE_EXPERIMENTAL
   DEPS glm::glm
 )

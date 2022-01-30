@@ -8,6 +8,8 @@ add_compile_options(-fdiagnostics-color=always -pedantic -Wall
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 
-include(cheers_target)
+include(FetchContent)
+include(import_bottle)
 
-CheersAddSubDir(DIR cheers)
+bottle_subdir(NAME cheers)
+bottle_subdir(NAME depends)

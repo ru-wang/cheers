@@ -7,14 +7,12 @@ FetchContent_Declare(protocolbuffers.protobuf
 set(protobuf_BUILD_TESTS OFF CACHE INTERNAL "")
 FetchContent_MakeAvailable(protocolbuffers.protobuf)
 
-CheersAddTarget(
-  LIB  protobuf
+bottle_library(
+  NAME protobuf
   DEPS protobuf::libprotobuf
-  OPTS -w
 )
 
-CheersAddTarget(
-  BIN  protoc
+bottle_binary(
+  NAME protoc
   DEPS protoc
-  OPTS -w
 )

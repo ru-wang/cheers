@@ -5,7 +5,7 @@ FetchContent_Declare(fmtlib.fmt
 
 FetchContent_MakeAvailable(fmtlib.fmt)
 
-CheersAddTarget(
-  LIB  fmt
+bottle_library(
+  NAME fmt
   DEPS fmt::fmt
 )

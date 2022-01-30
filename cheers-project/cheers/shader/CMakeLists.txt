@@ -15,9 +15,9 @@ set(CHEERS_FRAGMENT_SHADER_SRCS
   ${CMAKE_CURRENT_LIST_DIR}/model_shader_410.frag
   ${CMAKE_CURRENT_LIST_DIR}/path_shader_410.frag)
 
-CheersPackage()
+bottle_package()
 
-CheersAddTarget(
-  LIB  shader_absolute_path
+bottle_library(
+  NAME shader_absolute_path
   CFGS shader_absolute_path.hpp.in
 )

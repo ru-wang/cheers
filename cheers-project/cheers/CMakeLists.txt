@@ -1,10 +1,8 @@
-CheersPackage()
+bottle_package()
 
-CheersAddSubDir(DIR layer)
-CheersAddSubDir(DIR utils)
-CheersAddSubDir(DIR window)
+bottle_subdir(NAME layer)
+bottle_subdir(NAME utils)
+bottle_subdir(NAME window)
 
-CheersAddSubDir(DIR proto)
-CheersAddSubDir(DIR shader)
-
-CheersAddSubDir(DIR deps)
+bottle_subdir(NAME proto)
+bottle_subdir(NAME shader)

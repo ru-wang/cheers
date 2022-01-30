@@ -26,7 +26,7 @@ if(NOT ocornut.imgui_POPULATED)
     PUBLIC ${ocornut.imgui_SOURCE_DIR})
 endif()
 
-CheersAddTarget(
-  LIB  imgui
+bottle_library(
+  NAME imgui
   DEPS ocornut.imgui
 )
