@@ -8,9 +8,9 @@
 #include <glm/glm.hpp>
 
 #include "cheers/layer/utils.hpp"
+#include "cheers/shader/shader_absolute_path.hpp"
 #include "cheers/utils/gl_object.hpp"
 #include "cheers/utils/throw_and_check.hpp"
-#include "cheers/shader/shader_absolute_path.hpp"
 
 namespace cheers {
 

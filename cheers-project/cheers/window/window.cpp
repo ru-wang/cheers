@@ -1,6 +1,7 @@
 #include "cheers/window/window.hpp"
 
 #include <cmath>
+
 #include <GL/glew.h>
 
 #include "cheers/layer/scene_layer.hpp"

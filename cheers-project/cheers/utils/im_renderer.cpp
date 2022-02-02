@@ -1,15 +1,15 @@
 #include "cheers/utils/im_renderer.hpp"
 
+#include <filesystem>
+
 #include <GL/glew.h>
-#include <imgui.h>
 #include <glm/ext.hpp>
 #include <glm/glm.hpp>
+#include <imgui.h>
 
+#include "cheers/shader/shader_absolute_path.hpp"
 #include "cheers/utils/gl_backup_state.hpp"
 #include "cheers/utils/throw_and_check.hpp"
-#include "cheers/shader/shader_absolute_path.hpp"
-
-#include <filesystem>
 
 namespace cheers {
 

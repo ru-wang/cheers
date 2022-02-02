@@ -1,7 +1,7 @@
 #pragma once
 
-#include <array>
 #include <condition_variable>
+#include <array>
 #include <mutex>
 
 #include <GL/glew.h>

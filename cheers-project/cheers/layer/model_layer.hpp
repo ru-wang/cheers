@@ -7,8 +7,8 @@
 #include <vector>
 
 #include "cheers/layer/layer.hpp"
-#include "cheers/utils/gl_program_wrapper.hpp"
 #include "cheers/proto/model.pb.h"
+#include "cheers/utils/gl_program_wrapper.hpp"
 
 namespace cheers {
 
