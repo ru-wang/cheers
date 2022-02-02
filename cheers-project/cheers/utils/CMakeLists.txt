@@ -32,6 +32,12 @@ bottle_library(
 )
 
 bottle_library(
+  NAME im_export
+  HDRS im_export.hpp
+  DEPS @imgui
+)
+
+bottle_library(
   NAME im_renderer
   SRCS im_renderer.cpp
   HDRS im_renderer.hpp
