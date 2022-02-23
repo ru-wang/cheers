@@ -7,7 +7,7 @@ package cheers.message;
 message PathConfig {
   string name = 1;
   float line_width = 2;
-  ColorRGB color = 3;
+  ColorRGBA color = 3;
   Pose sensor_pose = 4;
 }
 

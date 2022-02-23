@@ -21,6 +21,8 @@ public:
     if (!m_render_data.name_index.count(config.name())) {
       m_render_data.name_index.emplace(config.name(), m_render_data.path_messages.size());
       m_render_data.path_messages.emplace_back().mutable_config()->CopyFrom(config);
+      if (m_render_data.path_messages.back().config().color().a() == 0.0f)
+        m_render_data.path_messages.back().mutable_config()->mutable_color()->set_a(1.0f);
       m_render_data.dirty = true;
     }
     return m_render_data.name_index.at(config.name());
@@ -86,7 +88,7 @@ private:
   struct RenderData {
     struct PathData {
       float line_width = 2.0f;
-      std::array<float, 3> color;
+      std::array<float, 4> color;
       std::array<float, 16> sensor_pose;
 
       std::vector<float> vertex_data;

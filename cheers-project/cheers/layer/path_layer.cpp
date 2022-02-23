@@ -81,7 +81,7 @@ void PathLayer::OnRenderLayer(const float* matrix_vp) {
 
   for (size_t i = 0; i < render_program(0).VaoSize(); ++i) {
     const auto& pathdata = m_render_data.path_data.at(i);
-    glUniform3fv(render_program(0).Uniform("clr"), 1, pathdata.color.data());
+    glUniform4fv(render_program(0).Uniform("clr"), 1, pathdata.color.data());
 
     render_program(0).Vao(i).Bind();
     render_program(0).Vao(i).Vbo(VBO_PATH_DATA).Bind();
@@ -102,7 +102,7 @@ void PathLayer::OnRenderLayer(const float* matrix_vp) {
   auto vp_matrix = glm::make_mat4(matrix_vp);
   for (size_t i = 0; i < render_program(0).VaoSize(); ++i) {
     const auto& pathdata = m_render_data.path_data.at(i);
-    glUniform3fv(render_program(0).Uniform("clr"), 1, pathdata.color.data());
+    glUniform4fv(render_program(0).Uniform("clr"), 1, pathdata.color.data());
 
     render_program(0).Vao(i).Bind();
     render_program(0).Vao(i).Vbo(VBO_NODE_DATA).Bind();
@@ -151,7 +151,7 @@ void PathLayer::UpdatePathData() {
     auto& pathdata = m_render_data.path_data.emplace_back();
     if (config.line_width() != 0.0f)
       pathdata.line_width = config.line_width();
-    pathdata.color = {color.r(), color.g(), color.b()};
+    pathdata.color = {color.r(), color.g(), color.b(), color.a()};
 
     glm::mat4 mat(1.0f);
     if (config.has_sensor_pose()) {
