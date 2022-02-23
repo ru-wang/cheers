@@ -13,15 +13,15 @@ public:
   ~SceneLayer() noexcept override = default;
 
   // 0 for X, 1 for Y, 2, Z, otherwise do nothing
-  void SetUpAxis(int up_axis);
+  void SetGridUpAxis(int up_axis);
 
 private:
   struct RenderData {
     std::array<float, 3> background_color{0.20f, 0.25f, 0.30f};
     std::array<float, 3> grid_color{0.80f, 0.75f, 0.70f};
-    int quater_grid_num = 10;
-    float metric_size = 1.0f;
-    int up_axis = 2;
+    int grid_num_per_quad = 10;
+    float grid_metric_size = 1.0f;
+    int grid_up_axis = 2;
 
     // generated data
     std::vector<int> grid_data;

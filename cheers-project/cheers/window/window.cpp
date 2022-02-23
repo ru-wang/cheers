@@ -21,7 +21,7 @@ void Window::CreateContext() {
 
   m_im_renderer = std::make_unique<ImRenderer>();
 
-  m_layers.push_back(std::make_unique<SceneLayer>());
+  m_layers.push_back(std::make_shared<SceneLayer>());
   m_layers.front()->CreateRenderer();
 }
 
@@ -38,11 +38,11 @@ void Window::SetInitEyePosition(float x, float y, float z) {
 void Window::SetInitUpVector(float x, float y, float z) {
   m_arcball_camera.set_up_vector(glm::vec3(x, y, z));
   if (std::abs(x) > std::abs(y) && std::abs(x) > std::abs(z))
-    std::dynamic_pointer_cast<SceneLayer>(m_layers.front())->SetUpAxis(0);
+    std::dynamic_pointer_cast<SceneLayer>(m_layers.front())->SetGridUpAxis(0);
   else if (std::abs(y) > std::abs(x) && std::abs(y) > std::abs(z))
-    std::dynamic_pointer_cast<SceneLayer>(m_layers.front())->SetUpAxis(1);
+    std::dynamic_pointer_cast<SceneLayer>(m_layers.front())->SetGridUpAxis(1);
   else if (std::abs(z) > std::abs(x) && std::abs(z) > std::abs(y))
-    std::dynamic_pointer_cast<SceneLayer>(m_layers.front())->SetUpAxis(2);
+    std::dynamic_pointer_cast<SceneLayer>(m_layers.front())->SetGridUpAxis(2);
 }
 
 bool Window::WaitForWindowExiting() {

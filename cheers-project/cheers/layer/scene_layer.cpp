@@ -25,9 +25,9 @@ constexpr std::array AXIS_DATA = {
 
 }
 
-void SceneLayer::SetUpAxis(int up_axis) {
+void SceneLayer::SetGridUpAxis(int up_axis) {
   if (up_axis == 0 || up_axis == 1 || up_axis == 2)
-    m_render_data.up_axis = up_axis;
+    m_render_data.grid_up_axis = up_axis;
 }
 
 void SceneLayer::OnCreateRenderer() {
@@ -48,39 +48,39 @@ void SceneLayer::OnUpdateImFrame() {
   widget::VerticalSliderColorEdit("Background Color", m_render_data.background_color);
   widget::VerticalSliderColorEdit("Grid Color", m_render_data.grid_color);
 
-  ImGui::DragInt("Quater Grid Number", &m_render_data.quater_grid_num, 1.0f, 10, 100);
-  ImGui::DragFloat("Metric Size (m)", &m_render_data.metric_size, 0.1f, 0.1f, 10.0f, "%.1f");
+  ImGui::DragInt("Grids Per Quadrant", &m_render_data.grid_num_per_quad, 1.0f, 10, 100);
+  ImGui::DragFloat("Grid Size (m)", &m_render_data.grid_metric_size, 0.1f, 0.1f, 10.0f, "%.1f");
 
   ImGui::End();
 }
 
 void SceneLayer::OnUpdateRenderData() {
   m_render_data.grid_data.clear();
-  for (int i = -m_render_data.quater_grid_num; i <= m_render_data.quater_grid_num; ++i) {
+  for (int i = -m_render_data.grid_num_per_quad; i <= m_render_data.grid_num_per_quad; ++i) {
     std::array<int, 12> vertices;
-    switch (m_render_data.up_axis) {
+    switch (m_render_data.grid_up_axis) {
       case 0:
         vertices = {
-            0, i, +m_render_data.quater_grid_num,  // a
-            0, i, -m_render_data.quater_grid_num,  // b
-            0, +m_render_data.quater_grid_num, i,  // c
-            0, -m_render_data.quater_grid_num, i,  // d
+            0, i, +m_render_data.grid_num_per_quad,  // a
+            0, i, -m_render_data.grid_num_per_quad,  // b
+            0, +m_render_data.grid_num_per_quad, i,  // c
+            0, -m_render_data.grid_num_per_quad, i,  // d
         };
         break;
       case 1:
         vertices = {
-            i, 0, +m_render_data.quater_grid_num,  // a
-            i, 0, -m_render_data.quater_grid_num,  // b
-            +m_render_data.quater_grid_num, 0, i,  // c
-            -m_render_data.quater_grid_num, 0, i,  // d
+            i, 0, +m_render_data.grid_num_per_quad,  // a
+            i, 0, -m_render_data.grid_num_per_quad,  // b
+            +m_render_data.grid_num_per_quad, 0, i,  // c
+            -m_render_data.grid_num_per_quad, 0, i,  // d
         };
         break;
       case 2:
         vertices = {
-            i, +m_render_data.quater_grid_num, 0,  // a
-            i, -m_render_data.quater_grid_num, 0,  // b
-            +m_render_data.quater_grid_num, i, 0,  // c
-            -m_render_data.quater_grid_num, i, 0,  // d
+            i, +m_render_data.grid_num_per_quad, 0,  // a
+            i, -m_render_data.grid_num_per_quad, 0,  // b
+            +m_render_data.grid_num_per_quad, i, 0,  // c
+            -m_render_data.grid_num_per_quad, i, 0,  // d
         };
         break;
       default:
@@ -142,7 +142,7 @@ void SceneLayer::RenderAxis(const float* matrix_vp) const {
 
   glLineWidth(3.0f);
   glUniformMatrix4fv(render_program(0).Uniform("mvp"), 1, GL_FALSE, matrix_vp);
-  glUniform1f(render_program(0).Uniform("metric"), m_render_data.metric_size);
+  glUniform1f(render_program(0).Uniform("metric"), m_render_data.grid_metric_size);
 
   render_program(0).Vao(0).Bind();
   glDrawArrays(GL_LINES, 0, 6);
@@ -153,7 +153,7 @@ void SceneLayer::RenderGrid(const float* matrix_vp) const {
 
   glLineWidth(0.5f);
   glUniformMatrix4fv(render_program(1).Uniform("mvp"), 1, GL_FALSE, matrix_vp);
-  glUniform1f(render_program(1).Uniform("metric"), m_render_data.metric_size);
+  glUniform1f(render_program(1).Uniform("metric"), m_render_data.grid_metric_size);
   glUniform3fv(render_program(1).Uniform("clr"), 1, m_render_data.grid_color.data());
 
   render_program(1).Vao(0).Bind();
