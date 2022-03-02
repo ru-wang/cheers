@@ -16,9 +16,9 @@ void RGBImageLayer::OnUpdateImFrame() {
     return;
   m_render_data.texture_data.resize(m_render_data.image_data.size());
 
-  ImGui::Begin(m_title.c_str(), nullptr, ImGuiWindowFlags_HorizontalScrollbar);
+  ImGui::Begin(m_title.c_str(), nullptr);
 
-  float thumb_h = ImGui::GetWindowContentRegionMax().y - ImGui::GetWindowContentRegionMin().y;
+  float thumb_h = ImGui::GetContentRegionAvail().y;
   for (size_t i = 0; i < m_render_data.image_data.size(); ++i) {
     auto& image = m_render_data.image_data.at(i);
     auto& texture = m_render_data.texture_data.at(i);
