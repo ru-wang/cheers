@@ -4,11 +4,13 @@ BasedOnStyle: Google
 AccessModifierOffset: -2
 AllowShortIfStatementsOnASingleLine: false
 AllowShortLoopsOnASingleLine: false
+BinPackArguments: false
+BinPackParameters: false
 BreakConstructorInitializers: BeforeComma
 ColumnLimit: 100
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
+DerivePointerAlignment: false
 IncludeBlocks: Preserve
-PointerAlignment: Left
 IncludeCategories:
   - Regex:           '^<c[[:alpha:]_]+>'
     Priority:        1
