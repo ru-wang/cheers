@@ -8,6 +8,7 @@
 #include <glm/glm.hpp>
 
 #include "cheers/layer/layer.hpp"
+#include "cheers/layer/scene_layer.hpp"
 #include "cheers/utils/context.hpp"
 #include "cheers/utils/im_renderer.hpp"
 #include "cheers/utils/window_ui_state.hpp"
@@ -33,8 +34,7 @@ public:
   void CreateContext();
   void DestroyContext();
 
-  void SetInitEyePosition(float x, float y, float z);
-  void SetInitUpVector(float x, float y, float z);
+  void SetInitEyeAndUp(float eye_x, float eye_y, float eye_z, float up_x, float up_y, float up_z);
 
   bool WaitForWindowExiting();
   void WaitForWindowStalled();
@@ -56,6 +56,8 @@ private:
 
   std::unique_ptr<Context> m_context;
   std::unique_ptr<ImRenderer> m_im_renderer;
+
+  std::shared_ptr<SceneLayer> m_scene_layer;
 
   std::mutex m_layer_buffer_mutex;
   std::vector<std::shared_ptr<Layer>> m_layer_buffer;

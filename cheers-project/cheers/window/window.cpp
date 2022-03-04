@@ -4,7 +4,6 @@
 
 #include <GL/glew.h>
 
-#include "cheers/layer/scene_layer.hpp"
 #include "cheers/window/callback.hpp"
 
 namespace cheers {
@@ -21,8 +20,9 @@ void Window::CreateContext() {
 
   m_im_renderer = std::make_unique<ImRenderer>();
 
-  m_layers.push_back(std::make_shared<SceneLayer>());
-  m_layers.front()->CreateRenderer();
+  m_scene_layer = std::make_shared<SceneLayer>();
+  m_scene_layer->CreateRenderer();
+  m_layers.emplace_back(m_scene_layer);
 }
 
 void Window::DestroyContext() {
@@ -31,18 +31,15 @@ void Window::DestroyContext() {
   m_context.reset();
 }
 
-void Window::SetInitEyePosition(float x, float y, float z) {
-  m_arcball_camera.set_eye_position(glm::vec3(x, y, z));
-}
-
-void Window::SetInitUpVector(float x, float y, float z) {
-  m_arcball_camera.set_up_vector(glm::vec3(x, y, z));
-  if (std::abs(x) > std::abs(y) && std::abs(x) > std::abs(z))
-    std::dynamic_pointer_cast<SceneLayer>(m_layers.front())->SetGridUpAxis(0);
-  else if (std::abs(y) > std::abs(x) && std::abs(y) > std::abs(z))
-    std::dynamic_pointer_cast<SceneLayer>(m_layers.front())->SetGridUpAxis(1);
-  else if (std::abs(z) > std::abs(x) && std::abs(z) > std::abs(y))
-    std::dynamic_pointer_cast<SceneLayer>(m_layers.front())->SetGridUpAxis(2);
+void Window::SetInitEyeAndUp(
+    float eye_x, float eye_y, float eye_z, float up_x, float up_y, float up_z) {
+  m_arcball_camera.SetInitEyeAndUp(glm::vec3(eye_x, eye_y, eye_z), glm::vec3(up_x, up_y, up_z));
+  if (std::abs(up_x) > std::abs(up_y) && std::abs(up_x) > std::abs(up_z))
+    m_scene_layer->SetGridUpAxis(0);
+  else if (std::abs(up_y) > std::abs(up_x) && std::abs(up_y) > std::abs(up_z))
+    m_scene_layer->SetGridUpAxis(1);
+  else if (std::abs(up_z) > std::abs(up_x) && std::abs(up_z) > std::abs(up_y))
+    m_scene_layer->SetGridUpAxis(2);
 }
 
 bool Window::WaitForWindowExiting() {

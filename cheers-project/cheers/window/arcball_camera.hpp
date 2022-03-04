@@ -14,15 +14,15 @@ public:
   glm::mat4 GetMatrixView() const;
   glm::mat4 GetMatrixProjection() const;
 
-  void set_eye_position(const glm::vec3& vec) noexcept { m_eye_position = vec; }
-  void set_center_point(const glm::vec3& vec) noexcept { m_center_point = vec; }
-  void set_up_vector(const glm::vec3& vec) noexcept { m_up_vector = vec; }
+  void SetInitEyeAndUp(const glm::vec3& eye, const glm::vec3& up);
 
 private:
-  static constexpr float ROTATION_RESOLUTION = 1.0 / 3.0f;
-  static constexpr float TRANSLATION_RESOLUTION = 1.0 / 200.0f;
-  static constexpr float TRANSLATION_Z_RESOLUTION = 1.0 / 2.0f;
+  static constexpr float ROTATION_RESOLUTION = 0.75f;
+  static constexpr float TRANSLATION_RESOLUTION = 0.005f;
+  static constexpr float TRANSLATION_Z_RESOLUTION = 0.025f;
   static constexpr float TRANSLATION_Z_MIN = 1.0f;
+
+  static constexpr float ELEVATION_ABS_MAX = glm::radians(89.9f);
 
   static constexpr float ZNEAR = 0.1f;
   static constexpr float ZFAR = 1000.0f;
@@ -30,9 +30,13 @@ private:
 
   float m_aspect = 1.0f;
 
-  glm::vec3 m_eye_position{-50.0f, 10.0f, 10.0f};
-  glm::vec3 m_center_point{0.0f, 0.0f, 0.0f};
+  float m_azimuth = 0.0f;
+  float m_elevation = glm::radians(45.0f);
+  float m_distance = 50.0f;
+
+  glm::vec3 m_eye_direction{-1.0f, 0.0f, 0.0f};
   glm::vec3 m_up_vector{0.0f, 0.0f, 1.0f};
+  glm::vec3 m_center_point{0.0f, 0.0f, 0.0f};
 };
 
 }  // namespace cheers
