@@ -35,6 +35,7 @@ bottle_library(
   NAME im_export
   HDRS im_export.hpp
   DEPS @imgui
+       @implot
 )
 
 bottle_library(
@@ -48,6 +49,7 @@ bottle_library(
        //cheers/shader
        @glm
        @imgui
+       @implot
        @opengl
 )
 

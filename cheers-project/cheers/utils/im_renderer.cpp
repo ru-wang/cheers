@@ -6,6 +6,7 @@
 #include <glm/ext.hpp>
 #include <glm/glm.hpp>
 #include <imgui.h>
+#include <implot.h>
 
 #include "cheers/shader/shader_absolute_path.hpp"
 #include "cheers/utils/gl_backup_state.hpp"
@@ -21,6 +22,7 @@ ImRenderer::ImRenderer() {
 
 ImRenderer::~ImRenderer() noexcept {
   ImGui::GetIO().Fonts->SetTexID(nullptr);
+  ImPlot::DestroyContext();
   ImGui::DestroyContext();
 }
 
@@ -84,7 +86,10 @@ void ImRenderer::InitImProgram() {
 
 void ImRenderer::InitImContext() {
   IMGUI_CHECKVERSION();
+
   ImGui::CreateContext();
+  ImPlot::CreateContext();
+
   ImGui::StyleColorsDark();
 
   ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
