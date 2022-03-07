@@ -49,7 +49,6 @@ bottle_library(
   SRCS scene_layer.cpp
   HDRS scene_layer.hpp
   DEPS :layer
-       :widget
        //cheers/utils:gl_object
        //cheers/utils:gl_program_wrapper
        //cheers/shader
@@ -61,11 +60,4 @@ bottle_library(
   NAME utils
   HDRS utils.hpp
   DEPS @glm
-)
-
-bottle_library(
-  NAME widget
-  SRCS widget.cpp
-  HDRS widget.hpp
-  DEPS @imgui
 )

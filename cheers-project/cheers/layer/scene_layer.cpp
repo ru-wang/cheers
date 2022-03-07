@@ -6,7 +6,6 @@
 #include <GL/glew.h>
 #include <imgui.h>
 
-#include "cheers/layer/widget.hpp"
 #include "cheers/shader/shader_absolute_path.hpp"
 #include "cheers/utils/gl_object.hpp"
 
@@ -45,8 +44,8 @@ void SceneLayer::OnUpdateImFrame() {
   ImGui::Begin("Scene Control Panel");
   ImGui::Text("Render Rate %.1f FPS", ImGui::GetIO().Framerate);
 
-  widget::VerticalSliderColorEdit("Background Color", m_render_data.background_color);
-  widget::VerticalSliderColorEdit("Grid Color", m_render_data.grid_color);
+  ImGui::ColorEdit3("Background", m_render_data.background_color.data());
+  ImGui::ColorEdit3("Grid Color", m_render_data.grid_color.data());
 
   ImGui::DragInt("Grids Per Quadrant", &m_render_data.grid_num_per_quad, 1.0f, 10, 100);
   ImGui::DragFloat("Grid Size (m)", &m_render_data.grid_metric_size, 0.1f, 0.1f, 10.0f, "%.1f");
