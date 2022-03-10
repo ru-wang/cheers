@@ -57,9 +57,7 @@ bool ImRenderer::UpdateUiState(const WindowUiState& ui_state) {
 
 void ImRenderer::BeginImFrame() {
   ImGui::NewFrame();
-  auto docker_flags =
-      ImGuiDockNodeFlags_PassthruCentralNode | ImGuiDockNodeFlags_NoDockingInCentralNode;
-  ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), docker_flags);
+  ImGui::DockSpaceOverViewport(ImGui::GetMainViewport(), ImGuiDockNodeFlags_PassthruCentralNode);
 }
 
 void ImRenderer::EndImFrame() {
