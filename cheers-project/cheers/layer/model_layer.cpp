@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 
-#include "cheers/shader/shader_absolute_path.hpp"
+#include "cheers/resource/shader_absolute_path.hpp"
 #include "cheers/utils/gl_object.hpp"
 #include "cheers/utils/throw_and_check.hpp"
 

@@ -5,4 +5,4 @@ bottle_subdir(NAME utils)
 bottle_subdir(NAME window)
 
 bottle_subdir(NAME proto)
-bottle_subdir(NAME shader)
+bottle_subdir(NAME resource)

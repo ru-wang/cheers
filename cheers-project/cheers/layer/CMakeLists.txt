@@ -14,7 +14,7 @@ bottle_library(
        //cheers/utils:gl_program_wrapper
        //cheers/utils:throw_and_check
        //cheers/proto
-       //cheers/shader
+       //cheers/resource
        @opengl
 )
 
@@ -28,7 +28,7 @@ bottle_library(
        //cheers/utils:gl_program_wrapper
        //cheers/utils:throw_and_check
        //cheers/proto
-       //cheers/shader
+       //cheers/resource
        @glm
        @opengl
 )
@@ -51,7 +51,7 @@ bottle_library(
   DEPS :layer
        //cheers/utils:gl_object
        //cheers/utils:gl_program_wrapper
-       //cheers/shader
+       //cheers/resource
        @imgui
        @opengl
 )

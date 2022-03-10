@@ -1,0 +1,36 @@
+#pragma once
+
+#define CHEERS_FONT_PATH @CHEERS_FONT_PATH@
+
+#define CHEERS_LITERAL_STRING(s) #s
+
+#define CHEERS_FONT_TTF_PATH_(path) CHEERS_LITERAL_STRING(path)
+#define CHEERS_FONT_TTF_PATH CHEERS_FONT_TTF_PATH_(CHEERS_FONT_PATH)
+
+#define CHEERS_FONT_TTF_FILE(name) CHEERS_LITERAL_STRING(name.ttf)
+
+#define CHEERS_FONT_TTF_FILE_PATH(name) \
+  std::filesystem::path(CHEERS_FONT_TTF_PATH) / std::filesystem::path(CHEERS_FONT_TTF_FILE(name))
+
+#include <filesystem>
+
+namespace cheers {
+
+inline static const auto cousine_ttf_absolute_path = CHEERS_FONT_TTF_FILE_PATH(Cousine-Regular);
+inline static const auto droidsans_ttf_absolute_path = CHEERS_FONT_TTF_FILE_PATH(DroidSans);
+inline static const auto karla_ttf_absolute_path = CHEERS_FONT_TTF_FILE_PATH(Karla-Regular);
+inline static const auto proggyclean_ttf_absolute_path = CHEERS_FONT_TTF_FILE_PATH(ProggyClean);
+inline static const auto proggytiny_ttf_absolute_path = CHEERS_FONT_TTF_FILE_PATH(ProggyTiny);
+inline static const auto roboto_ttf_absolute_path = CHEERS_FONT_TTF_FILE_PATH(Roboto-Medium);
+
+}  // namespace cheers
+
+#undef CHEERS_FONT_PATH
+
+#undef CHEERS_LITERAL_STRING
+
+#undef CHEERS_FONT_TTF_PATH_
+#undef CHEERS_FONT_TTF_PATH
+
+#undef CHEERS_FONT_TTF_FILE
+#undef CHEERS_FONT_TTF_FILE_PATH

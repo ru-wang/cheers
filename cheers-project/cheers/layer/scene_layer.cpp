@@ -6,7 +6,7 @@
 #include <GL/glew.h>
 #include <imgui.h>
 
-#include "cheers/shader/shader_absolute_path.hpp"
+#include "cheers/resource/shader_absolute_path.hpp"
 #include "cheers/utils/gl_object.hpp"
 
 namespace cheers {

@@ -46,7 +46,7 @@ bottle_library(
        :gl_program_wrapper
        :throw_and_check
        :window_ui_state
-       //cheers/shader
+       //cheers/resource
        @glm
        @imgui
        @implot

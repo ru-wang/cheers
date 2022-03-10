@@ -8,7 +8,8 @@
 #include <imgui.h>
 #include <implot.h>
 
-#include "cheers/shader/shader_absolute_path.hpp"
+#include "cheers/resource/font_absolute_path.hpp"
+#include "cheers/resource/shader_absolute_path.hpp"
 #include "cheers/utils/gl_backup_state.hpp"
 #include "cheers/utils/throw_and_check.hpp"
 
@@ -105,6 +106,7 @@ void ImRenderer::BindImFontTexture() {
 
   unsigned char* font_text;
   int width, height;
+  ImGui::GetIO().Fonts->AddFontFromFileTTF(karla_ttf_absolute_path.c_str(), 16);
   ImGui::GetIO().Fonts->GetTexDataAsRGBA32(&font_text, &width, &height);
   ImGui::GetIO().Fonts->SetTexID(
       reinterpret_cast<ImTextureID>(static_cast<intptr_t>(m_program.Text(0).name())));
