@@ -42,7 +42,20 @@ void SceneLayer::OnDestroyRenderer() {
 
 void SceneLayer::OnUpdateImFrame() {
   ImGui::Begin("Scene Control Panel");
+
   ImGui::Text("Render Rate %.1f FPS", ImGui::GetIO().Framerate);
+
+  auto* font_current = ImGui::GetFont();
+  if (ImGui::BeginCombo("Fonts", font_current->GetDebugName())) {
+    for (int i = 0; i < ImGui::GetIO().Fonts->Fonts.Size; ++i) {
+      auto* font = ImGui::GetIO().Fonts->Fonts[i];
+      ImGui::PushID(font);
+      if (ImGui::Selectable(font->GetDebugName(), font == font_current))
+        ImGui::GetIO().FontDefault = font;
+      ImGui::PopID();
+    }
+    ImGui::EndCombo();
+  }
 
   ImGui::ColorEdit3("Background", m_render_data.background_color.data());
   ImGui::ColorEdit3("Grid Color", m_render_data.grid_color.data());

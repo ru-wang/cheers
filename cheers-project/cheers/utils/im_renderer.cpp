@@ -113,11 +113,16 @@ void ImRenderer::BindImFontTexture() {
 
   unsigned char* font_text;
   int width, height;
-  ImGui::GetIO().Fonts->AddFontFromFileTTF(karla_ttf_absolute_path.c_str(), 16);
+  ImGui::GetIO().Fonts->AddFontFromFileTTF(karla_ttf_absolute_path.c_str(), 14);
+  ImGui::GetIO().Fonts->AddFontFromFileTTF(karla_ttf_absolute_path.c_str(), 18);
+  ImGui::GetIO().Fonts->AddFontFromFileTTF(karla_ttf_absolute_path.c_str(), 22);
+
   ImGui::GetIO().Fonts->GetTexDataAsRGBA32(&font_text, &width, &height);
   ImGui::GetIO().Fonts->SetTexID(
       reinterpret_cast<ImTextureID>(static_cast<intptr_t>(m_program.Text(0).name())));
   CHECK(ImGui::GetIO().Fonts->IsBuilt(), "{:10}:{} | {}", __FILE__, __LINE__, "font not built");
+
+  ImGui::GetIO().FontDefault = ImGui::GetIO().Fonts->Fonts[1];
 
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
