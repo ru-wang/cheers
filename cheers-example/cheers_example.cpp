@@ -7,8 +7,20 @@
 #include "cheers/layer/model_layer.hpp"
 #include "cheers/layer/path_layer.hpp"
 #include "cheers/layer/rgb_image_layer.hpp"
+#include "cheers/utils/im_export.hpp"
 #include "cheers/window/window.hpp"
 #include "task.hpp"
+
+class PlotLayer final : public cheers::Layer {
+public:
+  ~PlotLayer() noexcept override = default;
+
+private:
+  void OnUpdateImFrame() override {
+    ImGui::ShowDemoWindow();
+    ImPlot::ShowDemoWindow();
+  }
+};
 
 int main(int args, char* argv[]) {
   using namespace cheers;
@@ -23,6 +35,7 @@ int main(int args, char* argv[]) {
   auto path_layer = Window::Instance().InstallSharedLayer<PathLayer>();
   auto model_layer = Window::Instance().InstallSharedLayer<ModelLayer>();
   auto image_layer = Window::Instance().InstallSharedLayer<RGBImageLayer>();
+  Window::Instance().InstallSharedLayer<PlotLayer>();
 
   auto runner1 = std::thread(Interpolation(path_layer, 100));
   auto runner2 = std::thread(RandomSphere(model_layer, 10, 10.0f));
