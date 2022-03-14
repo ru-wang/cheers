@@ -1,6 +1,7 @@
 #include "cheers/utils/im_renderer.hpp"
 
 #include <filesystem>
+#include <utility>
 
 #include <GL/glew.h>
 #include <glm/ext.hpp>
@@ -66,9 +67,17 @@ void ImRenderer::EndImFrame() {
 }
 
 void ImRenderer::RenderImFrame() {
+  const auto* drawdata = ImGui::GetDrawData();
+  // avoid rendering when minimized, scale coordinates for retina displays
+  // (screen coordinates != framebuffer coordinates)
+  int fb_width = (int)(drawdata->DisplaySize.x * drawdata->FramebufferScale.x);
+  int fb_height = (int)(drawdata->DisplaySize.y * drawdata->FramebufferScale.y);
+  if (fb_width <= 0 || fb_height <= 0)
+    return;
+
   GlBackupState render_state_backup;
-  SetupImRenderState();
-  InternalRenderImFrame();
+  SetupImRenderState(drawdata, fb_width, fb_height);
+  InternalRenderImFrame(drawdata, fb_width, fb_height);
 }
 
 void ImRenderer::InitImProgram() {
@@ -116,17 +125,8 @@ void ImRenderer::BindImFontTexture() {
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, font_text);
 }
 
-void ImRenderer::SetupImRenderState() {
-  const auto* drawdata = ImGui::GetDrawData();
-
-  // avoid rendering when minimized, scale coordinates for retina displays
-  // (screen coordinates != framebuffer coordinates)
-  float fb_width = drawdata->DisplaySize.x * drawdata->FramebufferScale.x;
-  float fb_height = drawdata->DisplaySize.y * drawdata->FramebufferScale.y;
-  if (fb_width <= 0.0f && fb_height <= 0.0f)
-    return;
-
-  glActiveTexture(GL_TEXTURE0);
+void ImRenderer::SetupImRenderState(const void* data, int fb_width, int fb_height) {
+  auto drawdata = static_cast<const ImDrawData*>(data);
 
   // setup render state:
   //   - alpha-blending enabled
@@ -136,20 +136,27 @@ void ImRenderer::SetupImRenderState() {
   //   - polygon fill
   glEnable(GL_BLEND);
   glBlendEquation(GL_FUNC_ADD);
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
   glDisable(GL_CULL_FACE);
   glDisable(GL_DEPTH_TEST);
+  glDisable(GL_STENCIL_TEST);
   glEnable(GL_SCISSOR_TEST);
   glDisable(GL_PRIMITIVE_RESTART);
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-  glViewport(0, 0, static_cast<GLsizei>(fb_width), static_cast<GLsizei>(fb_height));
-  glm::mat4 ortho = glm::ortho(
-      drawdata->DisplayPos.x,
-      drawdata->DisplayPos.x + drawdata->DisplaySize.x,
-      drawdata->DisplayPos.y + drawdata->DisplaySize.y,
-      drawdata->DisplayPos.y,
-      0.0f, 1.0f);
+  glViewport(0, 0, fb_width, fb_height);
+  float l = drawdata->DisplayPos.x;
+  float r = drawdata->DisplayPos.x + drawdata->DisplaySize.x;
+  float t = drawdata->DisplayPos.y;
+  float b = drawdata->DisplayPos.y + drawdata->DisplaySize.y;
+
+  GLint current_clip_origin = 0;
+  glGetIntegerv(GL_CLIP_ORIGIN, &current_clip_origin);
+
+  // swap top and bottom if origin is upper left
+  if (current_clip_origin == GL_UPPER_LEFT)
+    std::swap(t, b);
+  glm::mat4 ortho = glm::ortho(l, r, b, t, 0.0f, 1.0f);
 
   m_program.Use();
   glUniform1i(m_program.Uniform("Texture"), 0);
@@ -169,62 +176,52 @@ void ImRenderer::SetupImRenderState() {
                         reinterpret_cast<void*>(IM_OFFSETOF(ImDrawVert, col)));
 }
 
-void ImRenderer::InternalRenderImFrame() {
-  const auto* drawdata = ImGui::GetDrawData();
+void ImRenderer::InternalRenderImFrame(const void* data, int fb_width, int fb_height) {
+  auto drawdata = static_cast<const ImDrawData*>(data);
 
-  // avoid rendering when minimized, scale coordinates for retina displays
-  // (screen coordinates != framebuffer coordinates)
-  float fb_width = drawdata->DisplaySize.x * drawdata->FramebufferScale.x;
-  float fb_height = drawdata->DisplaySize.y * drawdata->FramebufferScale.y;
-  if (fb_width <= 0.0f && fb_height <= 0.0f)
-    return;
+  // will project scissor/clipping rectangles into framebuffer space
+  ImVec2 clip_off = drawdata->DisplayPos;  // (0,0) unless using multi-viewports
+  ImVec2 clip_scale =
+      drawdata->FramebufferScale;  // (1,1) unless using retina display which are often (2,2)
 
   for (int i = 0; i < drawdata->CmdListsCount; ++i) {
     const auto* cmd_list = drawdata->CmdLists[i];
 
-    glBufferData(GL_ARRAY_BUFFER,
-                 static_cast<GLsizeiptr>(cmd_list->VtxBuffer.Size * sizeof(ImDrawVert)),
-                 static_cast<void*>(cmd_list->VtxBuffer.Data),
-                 GL_STREAM_DRAW);
-
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-                 static_cast<GLsizeiptr>(cmd_list->IdxBuffer.Size * sizeof(ImDrawIdx)),
-                 static_cast<void*>(cmd_list->IdxBuffer.Data),
-                 GL_STREAM_DRAW);
+    auto vtx_buffer_size = static_cast<GLsizeiptr>(cmd_list->VtxBuffer.Size * sizeof(ImDrawVert));
+    auto idx_buffer_size = static_cast<GLsizeiptr>(cmd_list->IdxBuffer.Size * sizeof(ImDrawIdx));
+    auto vtx_buffer_data = static_cast<const void*>(cmd_list->VtxBuffer.Data);
+    auto idx_buffer_data = static_cast<const void*>(cmd_list->IdxBuffer.Data);
+    glBufferData(GL_ARRAY_BUFFER, vtx_buffer_size, vtx_buffer_data, GL_STREAM_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, idx_buffer_size, idx_buffer_data, GL_STREAM_DRAW);
 
     for (const auto& pcmd : cmd_list->CmdBuffer) {
       if (pcmd.UserCallback) {
         if (pcmd.UserCallback == ImDrawCallback_ResetRenderState)
-          SetupImRenderState();
+          SetupImRenderState(data, fb_width, fb_height);
         else
           pcmd.UserCallback(cmd_list, &pcmd);
       } else {
-        float x1 = (pcmd.ClipRect.x - drawdata->DisplayPos.x) * drawdata->FramebufferScale.x;
-        float y1 = (pcmd.ClipRect.y - drawdata->DisplayPos.y) * drawdata->FramebufferScale.y;
-        float x2 = (pcmd.ClipRect.z - drawdata->DisplayPos.x) * drawdata->FramebufferScale.x;
-        float y2 = (pcmd.ClipRect.w - drawdata->DisplayPos.y) * drawdata->FramebufferScale.y;
-        if (x1 >= fb_width || y1 >= fb_height || x2 < 0.0f || y2 < 0.0f)
-          return;
+        // project scissor/clipping rectangles into framebuffer space
+        ImVec2 clip_min((pcmd.ClipRect.x - clip_off.x) * clip_scale.x,
+                        (pcmd.ClipRect.y - clip_off.y) * clip_scale.y);
+        ImVec2 clip_max((pcmd.ClipRect.z - clip_off.x) * clip_scale.x,
+                        (pcmd.ClipRect.w - clip_off.y) * clip_scale.y);
+        if (clip_max.x <= clip_min.x || clip_max.y <= clip_min.y)
+          continue;
 
-        glScissor(static_cast<GLint>(x1),
-                  static_cast<GLint>(fb_height - y2),
-                  static_cast<GLsizei>(x2 - x1),
-                  static_cast<GLsizei>(y2 - y1));
+        // apply scissor/clipping rectangle (y is inverted in opengl)
+        glScissor(static_cast<GLint>(clip_min.x),
+                  static_cast<GLint>(fb_height - clip_max.y),
+                  static_cast<GLsizei>(clip_max.x - clip_min.x),
+                  static_cast<GLsizei>(clip_max.y - clip_min.y));
 
+        // bind texture, draw
         glBindTexture(GL_TEXTURE_2D, reinterpret_cast<intptr_t>(pcmd.GetTexID()));
-
-        m_program.Vao(0).Bind();
-
         glDrawElementsBaseVertex(GL_TRIANGLES,
                                  static_cast<GLsizei>(pcmd.ElemCount),
                                  sizeof(ImDrawIdx) == 2 ? GL_UNSIGNED_SHORT : GL_UNSIGNED_INT,
                                  reinterpret_cast<void*>(pcmd.IdxOffset * sizeof(ImDrawIdx)),
                                  static_cast<GLint>(pcmd.VtxOffset));
-
-        glDrawElements(GL_TRIANGLES,
-                       static_cast<GLsizei>(pcmd.ElemCount),
-                       sizeof(ImDrawIdx) == 2 ? GL_UNSIGNED_SHORT : GL_UNSIGNED_INT,
-                       reinterpret_cast<void*>(pcmd.IdxOffset * sizeof(ImDrawIdx)));
       }
     }
   }

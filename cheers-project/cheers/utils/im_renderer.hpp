@@ -22,8 +22,8 @@ private:
   void InitImContext();
   void BindImFontTexture();
 
-  void SetupImRenderState();
-  void InternalRenderImFrame();
+  void SetupImRenderState(const void* data, int fb_width, int fb_height);
+  void InternalRenderImFrame(const void* data, int fb_width, int fb_height);
 
   ProgramWrapper m_program;
 

@@ -4,6 +4,7 @@ namespace cheers {
 
 GlBackupState::GlBackupState() {
   glGetIntegerv(GL_ACTIVE_TEXTURE, reinterpret_cast<GLint*>(&m_active_texture));
+  glActiveTexture(GL_TEXTURE0);
 
   glGetIntegerv(GL_CURRENT_PROGRAM, reinterpret_cast<GLint*>(&m_program));
   glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&m_texture));
@@ -31,19 +32,14 @@ GlBackupState::GlBackupState() {
 }
 
 GlBackupState::~GlBackupState() noexcept {
-  glActiveTexture(m_active_texture);
-
   glUseProgram(m_program);
   glBindTexture(GL_TEXTURE_2D, m_texture);
   glBindSampler(0, m_sampler);
+  glActiveTexture(m_active_texture);
+
   glBindVertexArray(m_vertex_array_object);
   glBindBuffer(GL_ARRAY_BUFFER, m_array_buffer);
   glBlendEquationSeparate(m_blend_equation_rgb, m_blend_equation_alpha);
-
-  glPolygonMode(GL_FRONT_AND_BACK, m_polygon_mode[0]);
-  glViewport(m_viewport[0], m_viewport[1], m_viewport[2], m_viewport[3]);
-  glScissor(m_scissor_box[0], m_scissor_box[1], m_scissor_box[2], m_scissor_box[3]);
-
   glBlendFuncSeparate(m_blend_src_rgb, m_blend_dst_rgb, m_blend_src_alpha, m_blend_dst_alpha);
 
   m_enable_blend ? glEnable(GL_BLEND) : glDisable(GL_BLEND);
@@ -52,6 +48,10 @@ GlBackupState::~GlBackupState() noexcept {
   m_enable_stencil_test ? glEnable(GL_STENCIL_TEST) : glDisable(GL_STENCIL_TEST);
   m_enable_scissor_test ? glEnable(GL_SCISSOR_TEST) : glDisable(GL_SCISSOR_TEST);
   m_enable_primitive_restart ? glEnable(GL_PRIMITIVE_RESTART) : glDisable(GL_PRIMITIVE_RESTART);
+
+  glPolygonMode(GL_FRONT_AND_BACK, m_polygon_mode[0]);
+  glViewport(m_viewport[0], m_viewport[1], m_viewport[2], m_viewport[3]);
+  glScissor(m_scissor_box[0], m_scissor_box[1], m_scissor_box[2], m_scissor_box[3]);
 }
 
 }  // namespace cheers
