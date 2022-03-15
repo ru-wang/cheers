@@ -163,7 +163,7 @@ void SceneLayer::RenderAxis(const float* matrix_vp) const {
 void SceneLayer::RenderGrid(const float* matrix_vp) const {
   render_program(1).Use();
 
-  glLineWidth(0.5f);
+  glLineWidth(1.0f);
   glUniformMatrix4fv(render_program(1).Uniform("mvp"), 1, GL_FALSE, matrix_vp);
   glUniform1f(render_program(1).Uniform("metric"), m_render_data.grid_metric_size);
   glUniform3fv(render_program(1).Uniform("clr"), 1, m_render_data.grid_color.data());

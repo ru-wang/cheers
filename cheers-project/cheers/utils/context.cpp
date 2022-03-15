@@ -76,6 +76,7 @@ void Context::CreateGlfwContext(int window_width, int window_height) {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  glfwWindowHint(GLFW_SAMPLES, 4);
 
   m_glfw_window = glfwCreateWindow(window_width, window_height, "cheers", nullptr, nullptr);
   CHECK(m_glfw_window, "{:10}:{} | {}", __FILE__, __LINE__, "failed to create m_glfw_window");
