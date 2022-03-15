@@ -8,22 +8,22 @@ set(CHEERS_FONT_TTF_SRCS
   ${CMAKE_CURRENT_LIST_DIR}/font/ProggyTiny.ttf
   ${CMAKE_CURRENT_LIST_DIR}/font/Roboto-Medium.ttf)
 
-set(CHEERS_GLSL_VERSION_NUMBER 410)
+set(CHEERS_GLSL_VERSION_NUMBER 460)
 set(CHEERS_GLSL_SHADER_PATH ${CMAKE_CURRENT_LIST_DIR}/shader)
 
 set(CHEERS_VERTEX_SHADER_SRCS
-  ${CMAKE_CURRENT_LIST_DIR}/shader/axis_shader_410.vert
-  ${CMAKE_CURRENT_LIST_DIR}/shader/grid_shader_410.vert
-  ${CMAKE_CURRENT_LIST_DIR}/shader/imgui_shader_410.vert
-  ${CMAKE_CURRENT_LIST_DIR}/shader/model_shader_410.vert
-  ${CMAKE_CURRENT_LIST_DIR}/shader/path_shader_410.vert)
+  ${CMAKE_CURRENT_LIST_DIR}/shader/axis_shader_460.vert
+  ${CMAKE_CURRENT_LIST_DIR}/shader/grid_shader_460.vert
+  ${CMAKE_CURRENT_LIST_DIR}/shader/imgui_shader_460.vert
+  ${CMAKE_CURRENT_LIST_DIR}/shader/model_shader_460.vert
+  ${CMAKE_CURRENT_LIST_DIR}/shader/path_shader_460.vert)
 
 set(CHEERS_FRAGMENT_SHADER_SRCS
-  ${CMAKE_CURRENT_LIST_DIR}/shader/axis_shader_410.frag
-  ${CMAKE_CURRENT_LIST_DIR}/shader/grid_shader_410.frag
-  ${CMAKE_CURRENT_LIST_DIR}/shader/imgui_shader_410.frag
-  ${CMAKE_CURRENT_LIST_DIR}/shader/model_shader_410.frag
-  ${CMAKE_CURRENT_LIST_DIR}/shader/path_shader_410.frag)
+  ${CMAKE_CURRENT_LIST_DIR}/shader/axis_shader_460.frag
+  ${CMAKE_CURRENT_LIST_DIR}/shader/grid_shader_460.frag
+  ${CMAKE_CURRENT_LIST_DIR}/shader/imgui_shader_460.frag
+  ${CMAKE_CURRENT_LIST_DIR}/shader/model_shader_460.frag
+  ${CMAKE_CURRENT_LIST_DIR}/shader/path_shader_460.frag)
 
 bottle_package()
 
