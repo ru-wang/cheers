@@ -26,7 +26,7 @@ void Window::CreateContext() {
 }
 
 void Window::DestroyContext() {
-  DeleteRenderPrograms();
+  m_ui_state.ClearStalled();
   m_im_renderer.reset();
   m_context.reset();
 }
@@ -43,16 +43,15 @@ void Window::SetInitEyeAndUp(
 }
 
 bool Window::WaitForWindowExiting() {
+  UpdateUiEvents();
   if (!m_context->ShouldGlfwWindowExit()) {
     CreateRenderPrograms();
-    UpdateUiEvents();
     OnUpdateRenderData();
     OnRenderLayer();
     return true;
-  } else {
-    m_ui_state.ClearStalled();
-    return false;
   }
+  DeleteRenderPrograms();
+  return false;
 }
 
 void Window::WaitForWindowStalled() {
