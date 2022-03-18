@@ -11,6 +11,8 @@
 ░                                                
 ....
 
+image::screenshot.png[Screenshot]
+
 == Building
 
 === Build-time dependencies
