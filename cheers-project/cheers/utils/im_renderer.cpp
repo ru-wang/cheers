@@ -53,7 +53,8 @@ bool ImRenderer::UpdateUiState(const WindowUiState& ui_state) {
   io.MouseWheel += ui_state.mouse_action.wheel_delta.y;
 
   // step 4: return true if ImGui windows focused
-  return ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow);
+  return ImGui::IsWindowHovered(ImGuiFocusedFlags_AnyWindow) ||
+         ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow);
 }
 
 void ImRenderer::BeginImFrame() {
