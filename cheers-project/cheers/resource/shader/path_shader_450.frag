@@ -1,4 +1,4 @@
-#version 460
+#version 450
 
 uniform vec4 clr;
 

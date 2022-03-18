@@ -1,4 +1,4 @@
-#version 460
+#version 450
 
 uniform mat4 mvp;
 
