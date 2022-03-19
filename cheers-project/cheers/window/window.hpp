@@ -47,6 +47,7 @@ private:
   void DeleteRenderPrograms();
 
   void UpdateUiEvents();
+  void ClearUiStalled();
   void OnUpdateRenderData();
   void OnRenderLayer();
 

@@ -26,7 +26,6 @@ void Window::CreateContext() {
 }
 
 void Window::DestroyContext() {
-  m_ui_state.ClearStalled();
   m_im_renderer.reset();
   m_context.reset();
 }
@@ -51,6 +50,7 @@ bool Window::WaitForWindowExiting() {
     return true;
   }
   DeleteRenderPrograms();
+  ClearUiStalled();
   return false;
 }
 
@@ -80,6 +80,10 @@ void Window::UpdateUiEvents() {
   m_arcball_camera.UpdateMatrixProjection(m_ui_state);
   m_matrix_vp = m_arcball_camera.GetMatrixProjection() * m_arcball_camera.GetMatrixView();
   m_ui_state.ClearMouseDeltaState();
+}
+
+void Window::ClearUiStalled() {
+  m_ui_state.ClearStalled();
 }
 
 void Window::OnUpdateRenderData() {

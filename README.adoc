@@ -129,8 +129,10 @@ flowchart TB
 
 You can install new layers at any time by calling the thread-safe `+Window::InstallSharedLayer()+`, even not within the create-render-destroy scope.
 
-=== Handling the UI events
+=== Handling the UI events (experimental)
 
 A close event is triggered when `+Ctlr-q+` is pressed. The window is then terminated gracefully. 
 
-A stall event is triggered when `+Space+` is hit. The user may call `+Window::WaitForWindowStalled()+` to block the user thread until `+Space+` is hit again, or `+Ctlr-q+` is pressed. See the link:cheers-example/task.hpp[example] for more information.
+A stall event is triggered when `+Space+` is hit. The user may call `+Window::WaitForWindowStalled()+` to block the user thread until `+Space+` is hit again, or `+Ctlr-q+` is pressed. Do not call it in the same thread with `+Window::WaitForWindowExiting()+` as it will be blocked thus not responsing to `+Ctlr-q+`.
+
+See the link:cheers-example/task.hpp[example] for more information.
