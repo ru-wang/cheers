@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <string_view>
 #include <vector>
 
 #include "cheers/layer/layer.hpp"
@@ -10,6 +11,8 @@ namespace cheers {
 
 class SceneLayer : public Layer {
 public:
+  static constexpr std::string_view DEFAULT_WINDOW_NAME = "Scene Control Panel";
+
   ~SceneLayer() noexcept override = default;
 
   // 0 for X, 1 for Y, 2, Z, otherwise do nothing

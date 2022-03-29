@@ -41,7 +41,10 @@ void SceneLayer::OnDestroyRenderer() {
 }
 
 void SceneLayer::OnUpdateImFrame() {
-  ImGui::Begin("Scene Control Panel");
+  if (!ImGui::Begin(DEFAULT_WINDOW_NAME.data(), nullptr, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    ImGui::End();
+    return;
+  }
 
   ImGui::Text("Render Rate %.1f FPS", ImGui::GetIO().Framerate);
 
