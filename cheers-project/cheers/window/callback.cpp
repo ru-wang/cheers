@@ -4,19 +4,23 @@
 
 namespace cheers {
 
+WindowUiState& Callback::GetUiState() {
+  return Window::Instance().m_ui_state;
+}
+
 void Callback::OnFocusWindow(GLFWwindow*, int focused) {
   if (focused)
-    Window::Instance().ui_state().window_focused_regained = focused;
+    GetUiState().window_focused_regained = focused;
 }
 
 void Callback::OnResizeWindow(GLFWwindow*, int width, int height) {
-  Window::Instance().ui_state().window_size.x = width;
-  Window::Instance().ui_state().window_size.y = height;
+  GetUiState().window_size.x = width;
+  GetUiState().window_size.y = height;
 }
 
 void Callback::OnResizeFrameBuffer(GLFWwindow*, int width, int height) {
-  Window::Instance().ui_state().frame_buffer.x = width;
-  Window::Instance().ui_state().frame_buffer.y = height;
+  GetUiState().frame_buffer.x = width;
+  GetUiState().frame_buffer.y = height;
 }
 
 void Callback::OnKeyAction(GLFWwindow* window, int key, int, int action, int mods) {
@@ -27,7 +31,7 @@ void Callback::OnKeyAction(GLFWwindow* window, int key, int, int action, int mod
           glfwSetWindowShouldClose(window, GLFW_TRUE);
         break;
       case GLFW_KEY_SPACE:
-        Window::Instance().ui_state().ToggleStalled();
+        GetUiState().ToggleStalled();
         break;
       default:
         break;
@@ -36,7 +40,7 @@ void Callback::OnKeyAction(GLFWwindow* window, int key, int, int action, int mod
 }
 
 void Callback::OnMouseButtonAction(GLFWwindow*, int button, int action, int) {
-  auto& mouse_action = Window::Instance().ui_state().mouse_action;
+  auto& mouse_action = GetUiState().mouse_action;
   if (button >= 0 && button < static_cast<int>(mouse_action.button_pressed.size())) {
     if (action == GLFW_PRESS)
       mouse_action.button_pressed.at(button) = 1;
@@ -46,12 +50,12 @@ void Callback::OnMouseButtonAction(GLFWwindow*, int button, int action, int) {
 }
 
 void Callback::OnMouseMove(GLFWwindow*, double xpos, double ypos) {
-  auto& mouse_action = Window::Instance().ui_state().mouse_action;
+  auto& mouse_action = GetUiState().mouse_action;
 
-  if (Window::Instance().ui_state().window_focused_regained) {
+  if (GetUiState().window_focused_regained) {
     mouse_action.pos.x = xpos;
     mouse_action.pos.y = ypos;
-    Window::Instance().ui_state().window_focused_regained = false;
+    GetUiState().window_focused_regained = false;
   } else {
     mouse_action.pos_delta.x = xpos - mouse_action.pos.x;
     mouse_action.pos_delta.y = ypos - mouse_action.pos.y;
@@ -61,7 +65,7 @@ void Callback::OnMouseMove(GLFWwindow*, double xpos, double ypos) {
 }
 
 void Callback::OnMouseScroll(GLFWwindow*, double xoffset, double yoffset) {
-  auto& mouse_action = Window::Instance().ui_state().mouse_action;
+  auto& mouse_action = GetUiState().mouse_action;
   mouse_action.wheel_delta.x = xoffset;
   mouse_action.wheel_delta.y = yoffset;
 }

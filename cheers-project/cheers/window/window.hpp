@@ -13,6 +13,7 @@
 #include "cheers/utils/im_renderer.hpp"
 #include "cheers/utils/window_ui_state.hpp"
 #include "cheers/window/arcball_camera.hpp"
+#include "cheers/window/callback.hpp"
 
 namespace cheers {
 
@@ -39,9 +40,6 @@ public:
   bool WaitForWindowExiting();
   void WaitForWindowStalled();
 
-  auto& ui_state() const noexcept { return m_ui_state; }
-  auto& ui_state() noexcept { return m_ui_state; }
-
 private:
   void CreateRenderPrograms();
   void DeleteRenderPrograms();
@@ -63,6 +61,8 @@ private:
   std::mutex m_layer_buffer_mutex;
   std::vector<std::shared_ptr<Layer>> m_layer_buffer;
   std::vector<std::shared_ptr<Layer>> m_layers;
+
+  friend WindowUiState& ::cheers::Callback::GetUiState();
 };
 
 }  // namespace cheers
