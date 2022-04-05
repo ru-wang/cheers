@@ -16,6 +16,7 @@ bottle_library(
        callback.hpp
   DEPS :arcball_camera
        //cheers/layer:layer
+       //cheers/layer:layer_manager
        //cheers/utils:context
        //cheers/utils:im_renderer
        //cheers/utils:window_ui_state

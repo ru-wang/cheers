@@ -8,7 +8,7 @@
 #include <glm/glm.hpp>
 
 #include "cheers/layer/layer.hpp"
-#include "cheers/layer/scene_layer.hpp"
+#include "cheers/layer/layer_manager.hpp"
 #include "cheers/utils/context.hpp"
 #include "cheers/utils/im_renderer.hpp"
 #include "cheers/utils/window_ui_state.hpp"
@@ -41,13 +41,12 @@ public:
   void WaitForWindowStalled();
 
 private:
-  void CreateRenderPrograms();
-  void DeleteRenderPrograms();
-
   void UpdateUiEvents();
   void ClearUiStalled();
-  void OnUpdateRenderData();
-  void OnRenderLayer();
+
+  void SwapLayerBuffer();
+  void UpdateRenderData();
+  void RenderLayer();
 
   WindowUiState m_ui_state;
   ArcballCamera m_arcball_camera;
@@ -55,12 +54,10 @@ private:
 
   std::unique_ptr<Context> m_context;
   std::unique_ptr<ImRenderer> m_im_renderer;
-
-  std::shared_ptr<SceneLayer> m_scene_layer;
+  std::unique_ptr<LayerManager> m_layer_manager;
 
   std::mutex m_layer_buffer_mutex;
   std::vector<std::shared_ptr<Layer>> m_layer_buffer;
-  std::vector<std::shared_ptr<Layer>> m_layers;
 
   friend WindowUiState& ::cheers::Callback::GetUiState();
 };
