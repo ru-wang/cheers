@@ -74,10 +74,9 @@ flowchart TB
 
     ui("Window::UpdateUiEvents()")
     decide{{"Window::WaitForWindowExiting()"}}
-    renew("Window::CreateRenderPrograms() <br/> <b>calls</b> Layer::CreateRenderer() <br/> <b>for newly installed layers</b>")
-    update("Window::OnUpdateRenderData() <br/> <b>calls</b> Layer::UpdateImFrame() <br/> <b>calls</b> Layer::UpdateRenderData()")
-    render("Window::OnRenderLayer() <br/> <b>calls</b> Layer::RenderLayer()")
-    destroy("Window::DeleteRenderPrograms() <br/> <b>calls</b> Layer::DestroyRenderer()")
+    renew("Window::SwapLayerBuffer() <br/> <b>calls</b> Layer::OnCreateRenderer() <br/> <b>for newly installed layers</b>")
+    update("Window::UpdateRenderData() <br/> <b>calls</b> Layer::OnUpdateImFrame() <br/> <b>calls</b> Layer::OnUpdateRenderData()")
+    render("Window::RenderLayer() <br/> <b>calls</b> Layer::OnRenderLayer()")
 
     ui     --> decide
     decide --> |Continue rendering?| renew
@@ -86,8 +85,8 @@ flowchart TB
     render --> ui
   end
 
-  decide  --> |User closes window?| destroy
-  destroy ----> exit(["<b>Window exits</b> <br/> Window::DestroyContext()"])
+  exit(["<b>Window exited</b> <br/> Window::DestroyContext() <br/> <b>calls</b> Layer::OnDestroyRenderer()"])
+  decide -----> |User closes window?| exit
 ----
 
 === Layer-lifecycle concept
@@ -113,10 +112,10 @@ flowchart TB
   subgraph loop [<b>Rendering thread</b>]
     direction TB
 
-    create("Layer::CreateRenderer() <br/> <b>calls</b> Layer::OnCreateRenderer()")
-    render2d("Layer::UpdateImFrame() <br/> <b>calls</b> Layer::OnUpdateImFrame()")
-    update("Layer::UpdateRenderData() <br/> <b>calls</b> Layer::OnUpdateRenderData()")
-    render3d("Layer::RenderLayer() <br/> <b>calls</b> Layer::OnRenderLayer()")
+    create("Layer::OnCreateRenderer()")
+    render2d("Layer::OnUpdateImFrame()")
+    update("Layer::OnUpdateRenderData()")
+    render3d("Layer::OnRenderLayer()")
 
     create --> render2d
     render2d --> update
@@ -124,7 +123,7 @@ flowchart TB
     render3d --> |Window updates the UI events| render2d
   end
   
-  render3d --> |Window destroys the layer| destroy("Layer::DestroyRenderer() <br/> <b>calls</b> Layer::OnDestroyRenderer()")
+  render3d --> |Window destroys the layer| destroy("Layer::OnDestroyRenderer()")
 ----
 
 You can install new layers at any time by calling the thread-safe `+Window::InstallSharedLayer()+`, even not within the create-render-destroy scope.
