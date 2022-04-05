@@ -24,11 +24,6 @@ constexpr std::array AXIS_DATA = {
 
 }
 
-void SceneLayer::SetGridUpAxis(int up_axis) {
-  if (up_axis == 0 || up_axis == 1 || up_axis == 2)
-    m_render_data.grid_up_axis = up_axis;
-}
-
 void SceneLayer::OnCreateRenderer() {
   add_render_program();
   add_render_program();
@@ -110,6 +105,11 @@ void SceneLayer::OnRenderLayer(const float* matrix_vp) {
                m_render_data.background_color.at(2), 1.0f);
   RenderAxis(matrix_vp);
   RenderGrid(matrix_vp);
+}
+
+void SceneLayer::SetGridUpAxis(int up_axis) {
+  if (up_axis == 0 || up_axis == 1 || up_axis == 2)
+    m_render_data.grid_up_axis = up_axis;
 }
 
 void SceneLayer::InitAxisProgram() {

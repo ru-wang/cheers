@@ -18,6 +18,10 @@ public:
   RGBImageLayer(const std::string& title) : m_title(title) {}
   ~RGBImageLayer() noexcept override = default;
 
+  void OnDestroyRenderer() override;
+
+  void OnUpdateImFrame() override;
+
   int CreateImagePlaceHolder(const message::ImageHandlerConfig& config) {
     std::lock_guard lock(render_data_mutex());
     if (!m_render_data.name_index.count(config.name())) {
@@ -57,10 +61,6 @@ private:
     std::vector<ImageData> image_data;
     std::vector<Texture2dObject> texture_data;
   };
-
-  void OnDestroyRenderer() override;
-
-  void OnUpdateImFrame() override;
 
   void UpdateImageData();
 

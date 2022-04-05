@@ -11,14 +11,6 @@ class Layer {
 public:
   virtual ~Layer() noexcept = 0;
 
-  void CreateRenderer() { OnCreateRenderer(); }
-  void DestroyRenderer() { OnDestroyRenderer(); }
-
-  void UpdateImFrame() { OnUpdateImFrame(); }
-  void UpdateRenderData() { OnUpdateRenderData(); }
-  void RenderLayer(const float* matrix_vp) { OnRenderLayer(matrix_vp); }
-
-protected:
   virtual void OnCreateRenderer() {}
   virtual void OnDestroyRenderer() {}
 
@@ -26,6 +18,7 @@ protected:
   virtual void OnUpdateRenderData() {}
   virtual void OnRenderLayer(const float*) {}
 
+protected:
   void add_render_program() { m_render_programs.emplace_back(); }
   void clear_render_program() noexcept { m_render_programs.clear(); }
 

@@ -16,6 +16,12 @@ class ModelLayer : public Layer {
 public:
   ~ModelLayer() noexcept override = default;
 
+  void OnCreateRenderer() override;
+  void OnDestroyRenderer() override;
+
+  void OnUpdateRenderData() override;
+  void OnRenderLayer(const float* matrix_vp) override;
+
   int CreateModel(const message::ModelConfig& config) {
     std::lock_guard lock(render_data_mutex());
     if (!m_render_data.name_index.count(config.name())) {
@@ -100,12 +106,6 @@ private:
     // generated
     std::vector<ModelData> model_data;
   };
-
-  void OnCreateRenderer() override;
-  void OnDestroyRenderer() override;
-
-  void OnUpdateRenderData() override;
-  void OnRenderLayer(const float* matrix_vp) override;
 
   void AugmentVaoData();
   void UpdateModelData();

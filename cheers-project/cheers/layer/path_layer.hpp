@@ -16,6 +16,12 @@ class PathLayer : public Layer {
 public:
   ~PathLayer() noexcept override = default;
 
+  void OnCreateRenderer() override;
+  void OnDestroyRenderer() override;
+
+  void OnUpdateRenderData() override;
+  void OnRenderLayer(const float* matrix_vp) override;
+
   int CreatePath(const message::PathConfig& config) {
     std::lock_guard lock(render_data_mutex());
     if (!m_render_data.name_index.count(config.name())) {
@@ -108,12 +114,6 @@ private:
     VBO_NODE_DATA,
     VBO_COUNT,
   };
-
-  void OnCreateRenderer() override;
-  void OnDestroyRenderer() override;
-
-  void OnUpdateRenderData() override;
-  void OnRenderLayer(const float* matrix_vp) override;
 
   void AugmentVaoData();
   void UpdatePathData();

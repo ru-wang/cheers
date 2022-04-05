@@ -15,6 +15,13 @@ public:
 
   ~SceneLayer() noexcept override = default;
 
+  void OnCreateRenderer() override;
+  void OnDestroyRenderer() override;
+
+  void OnUpdateImFrame() override;
+  void OnUpdateRenderData() override;
+  void OnRenderLayer(const float* matrix_vp) override;
+
   // 0 for X, 1 for Y, 2, Z, otherwise do nothing
   void SetGridUpAxis(int up_axis);
 
@@ -29,13 +36,6 @@ private:
     // generated data
     std::vector<int> grid_data;
   };
-
-  void OnCreateRenderer() override;
-  void OnDestroyRenderer() override;
-
-  void OnUpdateImFrame() override;
-  void OnUpdateRenderData() override;
-  void OnRenderLayer(const float* matrix_vp) override;
 
   void InitAxisProgram();
   void InitGridProgram();
