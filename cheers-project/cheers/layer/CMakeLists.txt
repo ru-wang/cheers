@@ -6,6 +6,14 @@ bottle_library(
 )
 
 bottle_library(
+  NAME layer_manager
+  SRCS layer_manager.cpp
+  HDRS layer_manager.hpp
+  DEPS :layer
+       :scene_layer
+)
+
+bottle_library(
   NAME model_layer
   SRCS model_layer.cpp
   HDRS model_layer.hpp
