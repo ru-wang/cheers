@@ -14,5 +14,5 @@ bottle_library(
 
 bottle_binary(
   NAME protoc
-  DEPS protoc
+  DEPS protobuf::protoc
 )
