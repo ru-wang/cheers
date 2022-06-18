@@ -26,13 +26,29 @@ if(NOT nothings.stb_POPULATED)
     INTERFACE ${nothings.stb_SOURCE_DIR})
 endif()
 
+add_library(demo_layer SHARED)
+target_sources(demo_layer
+  PRIVATE ${CMAKE_CURRENT_LIST_DIR}/demo_layer.cpp
+  PUBLIC  ${CMAKE_CURRENT_LIST_DIR}/demo_layer.hpp)
+target_link_libraries(demo_layer
+  PUBLIC cheers-project::cheers Eigen3::Eigen)
+
+configure_file(
+  ${CMAKE_CURRENT_LIST_DIR}/demo_shader_450.vert
+  ${CMAKE_CURRENT_BINARY_DIR}/demo_shader_450.vert
+  COPYONLY)
+configure_file(
+  ${CMAKE_CURRENT_LIST_DIR}/demo_shader_450.frag
+  ${CMAKE_CURRENT_BINARY_DIR}/demo_shader_450.frag
+  COPYONLY)
+
 add_executable(cheers_example_st
   ${CMAKE_CURRENT_LIST_DIR}/cheers_example.cpp
   ${CMAKE_CURRENT_LIST_DIR}/interpolator.hpp
   ${CMAKE_CURRENT_LIST_DIR}/task.cpp
   ${CMAKE_CURRENT_LIST_DIR}/task.hpp)
 target_link_libraries(cheers_example_st
-  PRIVATE cheers-project::cheers Eigen3::Eigen stb_image)
+  PRIVATE demo_layer cheers-project::cheers Eigen3::Eigen stb_image)
 
 add_executable(cheers_example_mt
   ${CMAKE_CURRENT_LIST_DIR}/cheers_example.cpp
@@ -40,6 +56,6 @@ add_executable(cheers_example_mt
   ${CMAKE_CURRENT_LIST_DIR}/task.cpp
   ${CMAKE_CURRENT_LIST_DIR}/task.hpp)
 target_link_libraries(cheers_example_mt
-  PRIVATE cheers-project::cheers Eigen3::Eigen stb_image)
+  PRIVATE demo_layer cheers-project::cheers Eigen3::Eigen stb_image)
 target_compile_definitions(cheers_example_mt
   PRIVATE CHEERS_EXAMPLE_MULTITHREAD)

@@ -9,6 +9,7 @@
 #include "cheers/layer/rgb_image_layer.hpp"
 #include "cheers/utils/im_export.hpp"
 #include "cheers/window/window.hpp"
+#include "demo_layer.hpp"
 #include "task.hpp"
 
 class PlotLayer final : public cheers::Layer {
@@ -36,6 +37,7 @@ int main(int args, char* argv[]) {
   auto model_layer = Window::Instance().InstallSharedLayer<ModelLayer>();
   auto image_layer = Window::Instance().InstallSharedLayer<RGBImageLayer>();
   Window::Instance().InstallSharedLayer<PlotLayer>();
+  Window::Instance().InstallSharedLayer<DemoLayer>(10);
 
   auto runner1 = std::thread(Interpolation(path_layer, 100));
   auto runner2 = std::thread(RandomSphere(model_layer, 10, 10.0f));
